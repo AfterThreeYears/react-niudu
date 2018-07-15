@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link
 } from 'react-router-dom';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux'
-import V2EX from './Component/V2EX';
-import './App.css';
+import V2EX from '@/components/V2EX';
+import V2EXDetail from '@/components/V2EXDetail';
+import SideBar from '@/components/SideBar';
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div>
-          <h1>h1</h1>
-          <Route exact path="/v2ex" component={V2EX} />
+          <SideBar />
+          <Route path="/v2ex" component={V2EX} />
+          <Route path="/v2ex/detail/:id"  component={V2EXDetail} />
+          {/* <Route path="/cnode" component={CNode} /> */}
         </div>
       </Router>
     );
