@@ -1,0 +1,9 @@
+:global(.swiper-container) {
+  overflow: hidden;
+  width: 100%;
+}
+
+:global(.swipe-wrap) {
+  display: flex;
+  transform: translate(0, 0, 0);
+}

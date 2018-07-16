@@ -5,7 +5,8 @@ import {
 } from 'react-router-dom';
 import V2EX from '@/components/V2EX';
 import V2EXDetail from '@/components/V2EXDetail';
-import SideBar from '@/components/SideBar';
+import SideBar from '@/components/SideBar/SideBar';
+import '@/styles/index.css';
 
 class App extends Component {
   render() {
