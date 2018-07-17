@@ -1,40 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-// import Swiper from 'swiper';
-// import 'swiper/dist/css/swiper.css';
+import classnames from 'classnames';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
-// import {fetchPosts} from '../redux/actions';
 import navs from '@/config/nav';
 
-// import styles from './style.css'
+import styles from '@/components/SideBar/SideBar.css';
 
 class SideBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedIndex: 0,
+    };
+  }
   static propTypes = {
-    posts: PropTypes.array.isRequired,
-    // fetchPosts: PropTypes.func.isRequired,
   };
   componentDidMount() {
-    // this.props.fetchPosts({listType: 'v2ex', field: 'all'});
-    //  new Swiper('.swiper-container', {
-    //   slidesPerView: 3,
-    //   spaceBetween: 30,
-    //   freeMode: true,
-    // });
-    // new Swiper('.swiper-container', {
-    //   slidesPerView: 3,
-    //   spaceBetween: 30,
-    //   freeMode: true,
-    // });
+
+  }
+  handleClick(e, item, index) {
+    console.log(e, item, index);
+    this.setState({
+      selectedIndex: index,
+    });
   }
   render() {
-    // const {isFetching, posts} = this.props;
+    const { selectedIndex } = this.state;
     return (
-      <SwipeWrapper>
-        {navs.map(({title}, index) => {
+      <SwipeWrapper
+        index={selectedIndex}
+      >
+        {navs.map((item, index) => {
+          const {title} = item;
           return (
-            <SwipeItem key={index}>{title}</SwipeItem>
+            <SwipeItem key={index}>
+              <div
+                onClick={e => this.handleClick(e, item, index)}
+                className={classnames({[styles.curIndex]: selectedIndex === index})}
+              >
+                {title}
+              </div>
+            </SwipeItem>
           )
         })}
       </SwipeWrapper>

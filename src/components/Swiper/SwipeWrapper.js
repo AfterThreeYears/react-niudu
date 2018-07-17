@@ -12,6 +12,24 @@ class SwipeWrapper extends Component {
     super(props);
     this.state = {
       transformX: this.props.initX || 0,
+      curIndex: this.props.index || 0,
+    }
+  }
+  static propTypes = {
+    index: PropTypes.number.isRequired,
+  };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.index !== prevState.curIndex) {
+      return {
+        curIndex: nextProps.index,
+      };
+    }
+    return null;
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.index !== prevState.curIndex) {
+      console.log('update', 'old is', prevState.curIndex, 'new is ', this.props.index);
+      this.changeIndexUpdateTransformX()
     }
   }
   componentDidMount() {
@@ -98,11 +116,17 @@ class SwipeWrapper extends Component {
   }
   resetTransition = () => {
     const { transformX, maxTransformX } = this.state;
-    console.log(`transformX is ${transformX}, maxTransformX is ${maxTransformX}`);
     if (transformX > 0) {
       this.setTransformX(0);
     } else if (maxTransformX > transformX) {
       this.setTransformX(maxTransformX);
+    }
+  }
+  changeIndexUpdateTransformX = () => {
+    const { index } = this.props;
+    if (index <= 0) {
+      this.setTransformX(0);
+      return;
     }
   }
   render() {
