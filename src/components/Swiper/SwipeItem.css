@@ -1,4 +1,4 @@
-:global(.swiper-slide) {
+:global(.swipe-item) {
   display: inline-block;
-  margin: 0 10px;
+  padding: 0 10px;
 }

@@ -6,8 +6,8 @@ class SwipeItem extends Component {
   }
   render() {
     return (
-      <div className={'swiper-slide'}>
-        {this.props.children}
+      <div className={'swipe-item'}>
+        <span>{this.props.children}</span>
       </div>
     );
   }

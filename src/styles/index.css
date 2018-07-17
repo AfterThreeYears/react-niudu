@@ -4,4 +4,7 @@ html, body, :global(#root) {
   font-size: 12px;
 }
 
-* { touch-action: none; }
+* {
+  touch-action: none;
+  box-sizing: border-box;
+}

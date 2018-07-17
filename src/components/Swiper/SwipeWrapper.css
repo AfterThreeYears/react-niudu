@@ -12,3 +12,19 @@
   width: 100%;
   display: table;
 }
+
+:global(.SwipeItem-cursor-container) {
+  height: .06rem;
+  margin-top: -.06rem;
+  position: relative;
+}
+
+:global(.SwipeItem-cursor) {
+  background: #ff2859;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 10px;
+  transition: transform .5s;
+  transform-origin: 0;
+}

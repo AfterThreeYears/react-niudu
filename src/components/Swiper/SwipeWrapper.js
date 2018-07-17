@@ -11,13 +11,21 @@ class SwipeWrapper extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      transformX: this.props.initX || 0,
-      curIndex: this.props.index || 0,
+      transformX: this.props.initX,
+      curIndex: this.props.index,
+      cursorDatas: [],
     }
   }
   static propTypes = {
-    index: PropTypes.number.isRequired,
+    initX: PropTypes.number,
+    index: PropTypes.number,
+    isShowCursor: PropTypes.bool,
   };
+  static defaultProps = {
+    initX: 0,
+    index: 0,
+    isShowCursor: true,
+  }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.index !== prevState.curIndex) {
       return {
@@ -37,18 +45,18 @@ class SwipeWrapper extends Component {
   }
   init() {
     // 获取swipeWrapper的宽度
-    const swiperWrapWidth = getPropNumeric(this.swiperWrap, 'width');
+    const swiperViewWidth = getPropNumeric(this.swiperWrap, 'width');
     // 获取展示给用户的swipe宽度
-    const swipeContainerWidth = getPropNumeric(this.swipeContainer, 'width');
-    console.log(swipeContainerWidth);
+    const swiperFullWidth = getPropNumeric(this.swipeContainer, 'width');
     // 最大可以滑动的值
-    const maxTransformX = swiperWrapWidth - swipeContainerWidth;
+    const maxTransformX = swiperViewWidth - swiperFullWidth;
     const noNeedTouchEvent = maxTransformX >= 0;
     this.setState({
-      swiperWrapWidth,
-      swipeContainerWidth,
+      swiperViewWidth,
+      swiperFullWidth,
       maxTransformX,
       noNeedTouchEvent,
+      cursorDatas: Array.from(this.swiperWrap.querySelectorAll('.swipe-item')),
     });
   }
   handleTouchStart = (e) => {
@@ -124,12 +132,44 @@ class SwipeWrapper extends Component {
   }
   changeIndexUpdateTransformX = () => {
     const { index } = this.props;
+    const { swiperViewWidth, swiperFullWidth, cursorDatas } = this.state;
     if (index <= 0) {
       this.setTransformX(0);
       return;
     }
+    // 当前游标的和开始的距离
+    const delta = cursorDatas.slice(0, index)
+                    .map(ele => getPropNumeric(ele, 'width'))
+                    .reduce((total, current) => total + current, 0);
+    // 当前游标宽度
+    const cursorWidth = getPropNumeric(cursorDatas[index], 'width');
+    // 游标修正位移
+    const offset = swiperViewWidth / 2 - cursorWidth / 2;
+    // 计算最终位移
+    const transformX = offset - delta;
+    // 前后位置修正
+    const fixedX = Math.max(Math.min(transformX, 0), swiperViewWidth - swiperFullWidth);
+    this.setTransformX(fixedX);
+  }
+  repositionCursor = () => {
+    const { curIndex, cursorDatas } = this.state;
+    const closeTransition = {
+      transitionDuration: '0s',
+    };
+    const ele = cursorDatas[curIndex];
+    if (!ele) return {};
+    const span = ele.querySelector('span');
+    if (!span) return {};
+    console.log(span);
+    return {
+      [properties.transform]: `translateX(${ele.offsetLeft + span.offsetLeft}px) scaleX(${span.offsetWidth})`,
+      ...closeTransition,
+      display: 'block',
+    };
   }
   render() {
+    const { isShowCursor } = this.props;
+    console.log('isShowCursor is ', isShowCursor);
     return (
       <div className={'swiper-wrap'} ref={ref => this.swiperWrap = ref}>
         <div className={'swipe-overflow'} >
@@ -141,6 +181,16 @@ class SwipeWrapper extends Component {
           >
             {this.props.children}
           </div>
+          {isShowCursor ?
+            <div
+              ref={ref => this.cursorRef = ref}
+              className={'SwipeItem-cursor-container'}
+            >
+              <div
+                className={'SwipeItem-cursor'}
+                style={this.repositionCursor()}
+              ></div>
+            </div> : undefined}
         </div>
       </div>
     );
