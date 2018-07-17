@@ -11,16 +11,10 @@ class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0,
+      selectedIndex: 1,
     };
   }
-  static propTypes = {
-  };
-  componentDidMount() {
-
-  }
   handleClick(e, item, index) {
-    console.log(e, item, index);
     this.setState({
       selectedIndex: index,
     });
@@ -28,23 +22,28 @@ class SideBar extends Component {
   render() {
     const { selectedIndex } = this.state;
     return (
-      <SwipeWrapper
-        index={selectedIndex}
-      >
-        {navs.map((item, index) => {
-          const {title} = item;
-          return (
-            <SwipeItem key={index}>
-              <div
-                onClick={e => this.handleClick(e, item, index)}
-                className={classnames({[styles.curIndex]: selectedIndex === index})}
-              >
-                {title}
-              </div>
-            </SwipeItem>
-          )
-        })}
-      </SwipeWrapper>
+      <div className={styles.wrap}>
+        <SwipeWrapper
+          index={selectedIndex}
+        >
+          {navs.map((item, index) => {
+            const {title} = item;
+            return (
+              <SwipeItem key={index}>
+                <span
+                  onClick={e => this.handleClick(e, item, index)}
+                  className={classnames({
+                    [styles.curIndex]: selectedIndex === index,
+                    [styles.item]: true
+                  })}
+                >
+                  {title}
+                </span>
+              </SwipeItem>
+            )
+          })}
+        </SwipeWrapper>
+      </div>
     );
   }
 }

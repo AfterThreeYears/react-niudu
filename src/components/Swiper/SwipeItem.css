@@ -1,4 +1,10 @@
 :global(.swipe-item) {
   display: inline-block;
-  padding: 0 10px;
+  padding: 0 0.27rem;
+  font-size: 0.38rem;
+}
+
+:global(.swipe-item > span) {
+  display: inline-block;
+  position: relative;
 }

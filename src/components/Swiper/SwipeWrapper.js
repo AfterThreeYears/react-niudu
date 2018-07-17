@@ -117,10 +117,17 @@ class SwipeWrapper extends Component {
   }
   removeTransition = () => {
     this.swipeContainer.style[properties.transition] = 'none';
+    if (this.props.isShowCursor) {
+      this.cursorRef.style[properties.transition] = 'none';
+    }
   }
   addTransition = () => {
+    const { isShowCursor } = this.props;
     const syncStyle = `${properties.transform} .4s ${ua.android ? 'cubic-bezier(0.04, 0.74, 0.36, 1)' : ''}`;
     this.swipeContainer.style[properties.transition] = syncStyle;
+    if (isShowCursor) {
+      this.cursorRef.style[properties.transition] = syncStyle;
+    }
   }
   resetTransition = () => {
     const { transformX, maxTransformX } = this.state;
@@ -153,18 +160,20 @@ class SwipeWrapper extends Component {
   }
   repositionCursor = () => {
     const { curIndex, cursorDatas } = this.state;
-    const closeTransition = {
-      transitionDuration: '0s',
-    };
     const ele = cursorDatas[curIndex];
     if (!ele) return {};
     const span = ele.querySelector('span');
     if (!span) return {};
-    console.log(span);
     return {
-      [properties.transform]: `translateX(${ele.offsetLeft + span.offsetLeft}px) scaleX(${span.offsetWidth})`,
-      ...closeTransition,
+      [properties.transform]: `translateX(${span.offsetLeft}px) scaleX(${span.offsetWidth})`,
       display: 'block',
+    };
+  }
+  getContainerStyle = () => {
+    const value = `translate(${this.state.transformX}px, 0) translateZ(0)`;
+    return {
+      transform: value,
+      WebkitTransform: value,
     };
   }
   render() {
@@ -185,6 +194,7 @@ class SwipeWrapper extends Component {
             <div
               ref={ref => this.cursorRef = ref}
               className={'SwipeItem-cursor-container'}
+              style={this.getContainerStyle()}
             >
               <div
                 className={'SwipeItem-cursor'}

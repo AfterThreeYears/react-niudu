@@ -5,6 +5,5 @@ html, body, :global(#root) {
 }
 
 * {
-  touch-action: none;
   box-sizing: border-box;
 }

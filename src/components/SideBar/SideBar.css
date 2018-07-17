@@ -1,3 +1,12 @@
 .curIndex {
   color: red;
 }
+
+.item {
+  line-height: 0.75rem;
+}
+
+.wrap {
+  position: fixed;
+  background: #fff;
+}
