@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {fetchPosts} from '../redux/actions';
 
 class V2EX extends Component {
   static propTypes = {
     posts: PropTypes.array.isRequired,
-    fetchPosts: PropTypes.func.isRequired,
   };
-  componentDidMount() {
-    this.props.fetchPosts({listType: 'v2ex', field: 'all'});
-  }
   render() {
     const {isFetching, posts} = this.props;
     return (
@@ -31,6 +26,4 @@ function mapStateToProps(state, ownProp) {
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchPosts,
-})(V2EX);
+export default connect(mapStateToProps)(V2EX);

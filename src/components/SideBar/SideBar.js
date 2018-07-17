@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
 import navs from '@/config/nav';
+import {fetchPosts} from '@/redux/actions';
 
 import styles from '@/components/SideBar/SideBar.css';
 
@@ -12,11 +14,22 @@ class SideBar extends Component {
     super(props);
     this.state = {
       selectedIndex: 1,
+      curItem: navs[0],
     };
+  }
+  static propTypes = {
+    fetchPosts: PropTypes.func.isRequired,
+  };
+  componentDidMount() {
+    console.log(this.state.curItem);
+    this.props.fetchPosts({listType: 'v2ex', field: 'all'});
   }
   handleClick(e, item, index) {
     this.setState({
+      curItem: item,
       selectedIndex: index,
+    }, () => {
+      this.props.fetchPosts({listType: 'v2ex', field: 'all'});
     });
   }
   render() {
@@ -56,5 +69,5 @@ function mapStateToProps(state, ownProp) {
 }
 
 export default connect(mapStateToProps, {
-  // fetchPosts,
+  fetchPosts,
 })(SideBar);
