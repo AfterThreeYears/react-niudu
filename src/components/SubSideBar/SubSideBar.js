@@ -25,9 +25,10 @@ class SubSideBar extends Component {
     this.setState({
       curItem: item,
       selectedIndex: index,
-    }, () => {
-      this.props.fetchPosts({listType: 'v2ex', field: 'all'});
     });
+    // , () => {
+    //   this.props.fetchPosts({listType: 'v2ex', field: 'all'});
+    // }
   }
   render() {
     const { selectedIndex } = this.state;
