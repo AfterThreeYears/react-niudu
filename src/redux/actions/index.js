@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const REQUEST_POSTS = 'REQUEST_POSTS';
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
+export const SET_TABS = 'SET_TABS';
 
 export const requestPosts = () => ({
   type: REQUEST_POSTS,
@@ -19,3 +20,10 @@ export const receivePosts = (subreddit, json) => ({
   type: RECEIVE_POSTS,
   posts: json,
 });
+
+export const setTabs = (tabs = []) => dispatch => {
+  dispatch({
+    type: SET_TABS,
+    tabs,
+  });
+}

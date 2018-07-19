@@ -3,11 +3,12 @@
 }
 
 .item {
-  line-height: 0.75rem;
+  line-height: 0.55rem;
+  font-size: 0.3rem;
 }
 
 .wrap {
   position: fixed;
   background: #fff;
-  top: 0;
+  top: 0.74rem;
 }

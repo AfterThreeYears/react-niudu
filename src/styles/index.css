@@ -6,4 +6,9 @@ html, body, :global(#root) {
 
 * {
   box-sizing: border-box;
+  font-size: 0.38rem;
+}
+
+.content {
+  margin-top: 1.5rem;
 }

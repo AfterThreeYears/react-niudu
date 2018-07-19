@@ -7,4 +7,5 @@
 :global(.swipe-item > span) {
   display: inline-block;
   position: relative;
+  white-space: nowrap;
 }

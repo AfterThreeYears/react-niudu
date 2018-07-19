@@ -4,38 +4,43 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
-import navs from '@/config/nav';
-import { setTabs } from '@/redux/actions';
+import {fetchPosts} from '@/redux/actions';
 
-import styles from '@/components/SideBar/SideBar.css';
+import styles from '@/components/SubSideBar/SubSideBar.css';
 
-class SideBar extends Component {
+class SubSideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedIndex: 0,
-      curItem: navs[0],
+      curItem: this.props.tabs[0],
     };
   }
+  static propTypes = {
+    fetchPosts: PropTypes.func.isRequired,
+  };
   componentDidMount() {
-    this.props.setTabs(this.state.curItem.tabs);
+    console.log(this.state.curItem);
+    this.props.fetchPosts({listType: 'v2ex', field: 'all'});
   }
   handleClick(e, item, index) {
     this.setState({
       curItem: item,
       selectedIndex: index,
     }, () => {
-      this.props.setTabs(item.tabs);
+      this.props.fetchPosts({listType: 'v2ex', field: 'all'});
     });
   }
   render() {
     const { selectedIndex } = this.state;
+    const { tabs } = this.props;
     return (
       <div className={styles.wrap}>
         <SwipeWrapper
           index={selectedIndex}
+          isShowCursor={false}
         >
-          {navs.map((item, index) => {
+          {tabs.map((item, index) => {
             const {title} = item;
             return (
               <SwipeItem key={index}>
@@ -57,6 +62,12 @@ class SideBar extends Component {
   }
 }
 
-export default connect(null, {
-  setTabs,
-})(SideBar);
+function mapStateToProps(state, ownProp) {
+  return {
+    tabs: state.subTabs.tabs,
+  };
+}
+
+export default connect(mapStateToProps, {
+  fetchPosts,
+})(SubSideBar);
