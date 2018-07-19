@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
 import {fetchPosts} from '@/redux/actions';
-
 import styles from '@/components/SubSideBar/SubSideBar.css';
 
 class SubSideBar extends Component {
@@ -20,7 +19,6 @@ class SubSideBar extends Component {
     fetchPosts: PropTypes.func.isRequired,
   };
   componentDidMount() {
-    console.log(this.state.curItem);
     this.props.fetchPosts({listType: 'v2ex', field: 'all'});
   }
   handleClick(e, item, index) {
