@@ -9,7 +9,7 @@ class CNode extends Component {
     fetchPosts: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    items: [],
+    posts: {},
     fetchPosts: () => {},
   }
   handleMore = () => {
