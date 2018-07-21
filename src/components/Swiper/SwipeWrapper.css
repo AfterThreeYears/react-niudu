@@ -1,16 +1,12 @@
+:global(.swiper-wrap) {
+  width: 100%;
+  display: table;
+}
+
 :global(.swiper-container) {
   display: flex;
   transform: translate3d(0, 0, 0);
-}
-
-:global(.swiper-wrap) {
-  width: 10rem;
-}
-
-:global(.swipe-overflow) {
-  overflow: hidden;
-  width: 100%;
-  display: table;
+  white-space: nowrap;
 }
 
 :global(.SwipeItem-cursor-container) {

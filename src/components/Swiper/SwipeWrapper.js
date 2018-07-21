@@ -20,11 +20,14 @@ class SwipeWrapper extends Component {
     initX: PropTypes.number,
     index: PropTypes.number,
     isShowCursor: PropTypes.bool,
+    // 可见视图的宽度
+    swiperViewWidth: PropTypes.number,
   };
   static defaultProps = {
     initX: 0,
     index: 0,
     isShowCursor: true,
+    swiperViewWidth: document.body.offsetWidth,
   }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.index !== prevState.curIndex) {
@@ -44,15 +47,14 @@ class SwipeWrapper extends Component {
     this.init();
   }
   init() {
-    // 获取swipeWrapper的宽度
-    const swiperViewWidth = getPropNumeric(this.swiperWrap, 'width');
-    // 获取展示给用户的swipe宽度
+    // 展示给用户的swipe宽度
+    const { swiperViewWidth } = this.props;
+    // 整个swipe的宽度
     const swiperFullWidth = getPropNumeric(this.swipeContainer, 'width');
     // 最大可以滑动的值
     const maxTransformX = swiperViewWidth - swiperFullWidth;
     const noNeedTouchEvent = maxTransformX >= 0;
     this.setState({
-      swiperViewWidth,
       swiperFullWidth,
       maxTransformX,
       noNeedTouchEvent,
@@ -61,6 +63,7 @@ class SwipeWrapper extends Component {
   }
   handleTouchStart = (e) => {
     const { noNeedTouchEvent } = this.state;
+    console.log(noNeedTouchEvent);
     if (noNeedTouchEvent) return;
     this.removeTransition();
     const { x } = this.getTouchPosition(e);
@@ -138,8 +141,8 @@ class SwipeWrapper extends Component {
     }
   }
   changeIndexUpdateTransformX = () => {
-    const { index } = this.props;
-    const { swiperViewWidth, swiperFullWidth, cursorDatas } = this.state;
+    const { index, swiperViewWidth } = this.props;
+    const { swiperFullWidth, cursorDatas } = this.state;
     if (index <= 0) {
       this.setTransformX(0);
       return;
@@ -178,30 +181,28 @@ class SwipeWrapper extends Component {
   }
   render() {
     const { isShowCursor } = this.props;
-    console.log('isShowCursor is ', isShowCursor);
     return (
       <div className={'swiper-wrap'} ref={ref => this.swiperWrap = ref}>
-        <div className={'swipe-overflow'} >
-          <div className={'swiper-container'}
-            ref={ref => this.swipeContainer = ref}
-            onTouchStart={this.handleTouchStart}
-            onTouchMove={this.handleTouchMove}
-            onTouchEnd={this.handleTouchEnd}
-          >
-            {this.props.children}
-          </div>
-          {isShowCursor ?
-            <div
-              ref={ref => this.cursorRef = ref}
-              className={'SwipeItem-cursor-container'}
-              style={this.getContainerStyle()}
-            >
-              <div
-                className={'SwipeItem-cursor'}
-                style={this.repositionCursor()}
-              ></div>
-            </div> : undefined}
+        <div
+          className={'swiper-container'}
+          ref={ref => this.swipeContainer = ref}
+          onTouchStart={this.handleTouchStart}
+          onTouchMove={this.handleTouchMove}
+          onTouchEnd={this.handleTouchEnd}
+        >
+          {this.props.children}
         </div>
+        {isShowCursor ?
+          <div
+            ref={ref => this.cursorRef = ref}
+            className={'SwipeItem-cursor-container'}
+            style={this.getContainerStyle()}
+          >
+            <div
+              className={'SwipeItem-cursor'}
+              style={this.repositionCursor()}
+            />
+          </div> : undefined}
       </div>
     );
   }
