@@ -1,33 +1,48 @@
 import { combineReducers } from 'redux';
-import { REQUEST_POSTS, RECEIVE_POSTS, SET_TABS } from '../actions';
+import { REQUEST_POSTS, RECEIVE_POSTS, SET_NAV_INFO } from '../actions';
 
 const posts = (state = {
   isFetching: false,
-  items: []
+  items: [],
+  page: 1,
+  limit: 10,
+  isClear: true
 }, action) => {
-  switch (action.type) {
+  const {
+    itemInfo,
+    type,
+  } = action;
+  switch (type) {
     case REQUEST_POSTS:
       return {
         ...state,
         isFetching: true,
-      }
+      };
     case RECEIVE_POSTS:
-      return {
+      const { isClear, items } = itemInfo;
+      const baseState = {
         ...state,
+        ...action.itemInfo,
         isFetching: false,
-        items: action.posts,
-      }
+      };
+      if ( isClear ) return baseState;
+      return {
+        ...baseState,
+        items: [...state.items, ...items],
+      };
     default:
       return state
   }
 };
 
-const subTabs = (state = {
+const subTabInfo = (state = {
+  currentNav: '',
+  currentTab: '',
   tabs: [],
-}, action) => {
-  if (action.type === SET_TABS) return {
+}, { type, navInfo }) => {
+  if (type === SET_NAV_INFO) return {
     ...state,
-    tabs: action.tabs,
+    ...navInfo,
   };
   return state; 
 };
@@ -35,7 +50,7 @@ const subTabs = (state = {
 
 const reducer = combineReducers({
   posts,
-  subTabs,
+  subTabInfo,
 });
 
 export default reducer;

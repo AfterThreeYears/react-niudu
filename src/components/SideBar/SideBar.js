@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
-import navs from '@/config/nav';
-import { setTabs } from '@/redux/actions';
+import navs, { pathMap } from '@/config/nav';
+import { handleSetNavInfo } from '@/redux/actions';
 
 import styles from '@/components/SideBar/SideBar.css';
 
@@ -13,19 +14,30 @@ class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0,
-      curItem: navs[0],
+      selectedIndex: pathMap[this.props.location.pathname],
     };
   }
   componentDidMount() {
-    this.props.setTabs(this.state.curItem.tabs);
+    const { tabs, url } = navs[this.state.selectedIndex];
+    this.props.handleSetNavInfo({
+      currentNav: url,
+      currentTab: tabs[0].tab,
+      tabs: tabs,
+    });
   }
   handleClick(e, item, index) {
+    const {
+      tabs,
+      url,
+    } = item;
     this.setState({
-      curItem: item,
       selectedIndex: index,
     }, () => {
-      this.props.setTabs(item.tabs);
+      this.props.handleSetNavInfo({
+        currentNav: url,
+        currentTab: tabs[0].tab,
+        tabs: tabs,
+      });
     });
   }
   render() {
@@ -36,10 +48,11 @@ class SideBar extends Component {
           index={selectedIndex}
         >
           {navs.map((item, index) => {
-            const {title} = item;
+            const {title, url} = item;
             return (
               <SwipeItem key={index}>
-                <span
+                <Link
+                  to={url}
                   onClick={e => this.handleClick(e, item, index)}
                   className={classnames({
                     [styles.curIndex]: selectedIndex === index,
@@ -47,7 +60,7 @@ class SideBar extends Component {
                   })}
                 >
                   {title}
-                </span>
+                </Link>
               </SwipeItem>
             )
           })}
@@ -57,6 +70,6 @@ class SideBar extends Component {
   }
 }
 
-export default connect(null, {
-  setTabs,
-})(SideBar);
+export default withRouter(connect(null, {
+  handleSetNavInfo,
+})(SideBar));

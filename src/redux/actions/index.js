@@ -2,28 +2,37 @@ import axios from 'axios';
 
 export const REQUEST_POSTS = 'REQUEST_POSTS';
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
-export const SET_TABS = 'SET_TABS';
+export const SET_NAV_INFO = 'SET_NAV_INFO';
 
 export const requestPosts = () => ({
   type: REQUEST_POSTS,
 });
 
-export const fetchPosts = ({listType, field}) => dispatch => {
+export const fetchPosts = ({currentNav, currentTab, page = 1, limit = 10, isClear = true}) => dispatch => {
   dispatch(requestPosts())
-  return axios.get(`${listType}/list/${field}`)
-    .then(json => {
-      return dispatch(receivePosts(listType, json));
-    });
-}
+  let axiosPromise = Promise.resolve();
+  if ( currentNav === 'v2ex' ) {
+    axiosPromise = axios.get(`${currentNav}/list/${currentTab}`);
+  } else if ( currentNav === 'cnode' ) {
+    const params = {
+      tab: currentTab,
+      page,
+      limit,
+    };
+    axiosPromise = axios.get('https://cnodejs.org/api/v1/topics', params);
+  }
+  return axiosPromise.then(items => dispatch(receivePosts({items, page, limit, isClear})));
+};
 
-export const receivePosts = (subreddit, json) => ({
+export const receivePosts = (itemInfo) => ({
   type: RECEIVE_POSTS,
-  posts: json,
+  itemInfo,
 });
 
-export const setTabs = (tabs = []) => dispatch => {
+
+export const handleSetNavInfo = (navInfo) => dispatch => {
   dispatch({
-    type: SET_TABS,
-    tabs,
+    type: SET_NAV_INFO,
+    navInfo,
   });
-}
+};

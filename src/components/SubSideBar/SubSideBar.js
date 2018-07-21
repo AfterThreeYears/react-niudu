@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
-import {fetchPosts} from '@/redux/actions';
+import { fetchPosts, handleSetNavInfo } from '@/redux/actions';
 import { getPropNumeric } from '@/utils/styles';
 
 import styles from '@/components/SubSideBar/SubSideBar.css';
@@ -14,27 +14,41 @@ class SubSideBar extends Component {
     super(props);
     this.state = {
       selectedIndex: 0,
-      curItem: this.props.tabs[0],
       swiperViewWidth: 360,
     };
   }
   static propTypes = {
     fetchPosts: PropTypes.func.isRequired,
+    tabs: PropTypes.array.isRequired,
+    currentNav: PropTypes.string.isRequired,
+    currentTab: PropTypes.string.isRequired
   };
   componentDidMount() {
     this.setState({
       swiperViewWidth: getPropNumeric(this.swiperWrap, 'width'),
     });
-    this.props.fetchPosts({listType: 'v2ex', field: 'all'});
+  }
+  componentWillReceiveProps(nextProps) {
+    const oldNav = this.props.currentNav;
+    const oldTab = this.props.currentTab;
+    const { currentNav, currentTab } = nextProps;
+    if ( oldNav === currentNav && oldTab === currentTab ) return;
+    const isClear = oldNav !== currentNav;
+    this.props.fetchPosts({currentNav, currentTab, isClear});
   }
   handleClick(e, item, index) {
+    const {
+      tabs,
+      currentNav,
+    } = this.props;
+    this.props.handleSetNavInfo({
+      currentNav,
+      currentTab: item.tab,
+      tabs,
+    })
     this.setState({
-      curItem: item,
       selectedIndex: index,
     });
-    // , () => {
-    //   this.props.fetchPosts({listType: 'v2ex', field: 'all'});
-    // }
   }
   render() {
     const { selectedIndex, swiperViewWidth } = this.state;
@@ -71,12 +85,11 @@ class SubSideBar extends Component {
   }
 }
 
-function mapStateToProps(state, ownProp) {
-  return {
-    tabs: state.subTabs.tabs,
-  };
+function mapStateToProps({ subTabInfo }, ownProp) {
+  return subTabInfo;
 }
 
 export default connect(mapStateToProps, {
   fetchPosts,
+  handleSetNavInfo,
 })(SubSideBar);

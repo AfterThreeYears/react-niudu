@@ -84,6 +84,8 @@ const base = [
   },
 ];
 
+
+
 const test = [
   {
     title: '知乎日报',
@@ -112,14 +114,7 @@ if (isProd) {
 
 export default nav;
 
-// function getRanDom(min, max) {
-//   return (Math.random() * (max - min + 1) + min).toFixed(0);
-// }
-
-// export default Array.from(Array(20)).map((item, index) => {
-//   return {
-//     title: getRanDom(10000, 100),
-//     id: index,
-//     url: '',
-//   }
-// });
+export const pathMap = {
+  '/v2ex': 0,
+  '/cnode': 1,
+};

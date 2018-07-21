@@ -4,6 +4,7 @@ import {
   Route,
 } from 'react-router-dom';
 import V2EX from '@/components/V2EX';
+import CNode from '@/components/CNode/CNode';
 import V2EXDetail from '@/components/V2EXDetail';
 import SideBar from '@/components/SideBar/SideBar';
 import SubSideBar from '@/components/SubSideBar/SubSideBar';
@@ -18,7 +19,7 @@ class App extends Component {
           <SubSideBar />
           <Route path="/v2ex" component={V2EX} />
           <Route path="/v2ex/detail/:id"  component={V2EXDetail} />
-          {/* <Route path="/cnode" component={CNode} /> */}
+          <Route path="/cnode" component={CNode} />
         </div>
       </Router>
     );
