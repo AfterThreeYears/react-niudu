@@ -10,6 +10,12 @@ import { getPropNumeric } from '@/utils/styles';
 import styles from '@/components/SubSideBar/SubSideBar.css';
 
 class SubSideBar extends Component {
+  static propTypes = {
+    fetchPosts: PropTypes.func.isRequired,
+    tabs: PropTypes.array.isRequired,
+    currentNav: PropTypes.string.isRequired,
+    currentTab: PropTypes.string.isRequired,
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -17,12 +23,6 @@ class SubSideBar extends Component {
       swiperViewWidth: 360,
     };
   }
-  static propTypes = {
-    fetchPosts: PropTypes.func.isRequired,
-    tabs: PropTypes.array.isRequired,
-    currentNav: PropTypes.string.isRequired,
-    currentTab: PropTypes.string.isRequired
-  };
   componentDidMount() {
     this.setState({
       swiperViewWidth: getPropNumeric(this.swiperWrap, 'width'),
@@ -34,7 +34,7 @@ class SubSideBar extends Component {
     const { currentNav, currentTab } = nextProps;
     if ( oldNav === currentNav && oldTab === currentTab ) return;
     const isClear = oldNav !== currentNav;
-    this.props.fetchPosts({currentNav, currentTab, isClear});
+    this.props.fetchPosts({ currentNav, currentTab, isClear });
   }
   handleClick(e, item, index) {
     const {
@@ -45,7 +45,7 @@ class SubSideBar extends Component {
       currentNav,
       currentTab: item.tab,
       tabs,
-    })
+    });
     this.setState({
       selectedIndex: index,
     });
@@ -57,28 +57,28 @@ class SubSideBar extends Component {
       <div className={styles.wrap} ref={ref => this.swiperWrap = ref}>
         {
           tabs.length ?
-          <SwipeWrapper
-            index={selectedIndex}
-            isShowCursor={false}
-            swiperViewWidth={swiperViewWidth}
-          >
-            {tabs.map((item, index) => {
-              const {title} = item;
-              return (
-                <SwipeItem key={index}>
-                  <span
-                    onClick={e => this.handleClick(e, item, index)}
-                    className={classnames({
-                      [styles.curIndex]: selectedIndex === index,
-                      [styles.item]: true
-                    })}
-                  >
-                    {title}
-                  </span>
-                </SwipeItem>
-              )
-            })}
-          </SwipeWrapper> : undefined
+            <SwipeWrapper
+              index={selectedIndex}
+              isShowCursor={false}
+              swiperViewWidth={swiperViewWidth}
+            >
+              {tabs.map((item, index) => {
+                const { title } = item;
+                return (
+                  <SwipeItem key={index}>
+                    <span
+                      onClick={e => this.handleClick(e, item, index)}
+                      className={classnames({
+                        [styles.curIndex]: selectedIndex === index,
+                        [styles.item]: true,
+                      })}
+                    >
+                      {title}
+                    </span>
+                  </SwipeItem>
+                );
+              })}
+            </SwipeWrapper> : undefined
         }
       </div>
     );

@@ -8,14 +8,6 @@ const ua = env();
 const properties = getProperties();
 
 class SwipeWrapper extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      transformX: this.props.initX,
-      curIndex: this.props.index,
-      cursorDatas: [],
-    }
-  }
   static propTypes = {
     initX: PropTypes.number,
     index: PropTypes.number,
@@ -29,6 +21,14 @@ class SwipeWrapper extends Component {
     isShowCursor: true,
     swiperViewWidth: document.body.offsetWidth,
   }
+  constructor(props) {
+    super(props);
+    this.state = {
+      transformX: this.props.initX,
+      curIndex: this.props.index,
+      cursorDatas: [],
+    };
+  }
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.index !== prevState.curIndex) {
       return {
@@ -37,14 +37,14 @@ class SwipeWrapper extends Component {
     }
     return null;
   }
+  componentDidMount() {
+    this.init();
+  }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.index !== prevState.curIndex) {
       console.log('update', 'old is', prevState.curIndex, 'new is ', this.props.index);
-      this.changeIndexUpdateTransformX()
+      this.changeIndexUpdateTransformX();
     }
-  }
-  componentDidMount() {
-    this.init();
   }
   init() {
     // 展示给用户的swipe宽度
@@ -82,9 +82,9 @@ class SwipeWrapper extends Component {
     this.setState({
       // 每次移动后需要把当前移动到的x赋值给prevTouchX，否则（x - this.prevTouchX）越来越大，移动也越来越快
       prevTouchX: x,
-    })
+    });
   }
-  handleTouchEnd = (e) => {
+  handleTouchEnd = () => {
     this.addTransition();
     this.resetTransition();
     this.startAutoScroll();
@@ -149,8 +149,8 @@ class SwipeWrapper extends Component {
     }
     // 当前游标的和开始的距离
     const delta = cursorDatas.slice(0, index)
-                    .map(ele => getPropNumeric(ele, 'width'))
-                    .reduce((total, current) => total + current, 0);
+      .map(ele => getPropNumeric(ele, 'width'))
+      .reduce((total, current) => total + current, 0);
     // 当前游标宽度
     const cursorWidth = getPropNumeric(cursorDatas[index], 'width');
     // 游标修正位移

@@ -30,12 +30,12 @@ class CNode extends Component {
     });
   }
   render() {
-    const {isFetching, items} = this.props.posts;
+    const { isFetching, items } = this.props.posts;
     return (
       <div>
         {
           isFetching ? <h1>cnode加载中</h1> :
-          <ul>{items.map((item, index) => (<li key={index}>{index}-{item.title}</li>))}</ul>
+            <ul>{items.map((item, index) => (<li key={index}>{index}-{item.title}</li>))}</ul>
         }
         <button onClick={this.handleMore}>click</button>
       </div>

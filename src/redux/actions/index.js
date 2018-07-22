@@ -8,8 +8,8 @@ export const requestPosts = () => ({
   type: REQUEST_POSTS,
 });
 
-export const fetchPosts = ({currentNav, currentTab, page = 1, limit = 10, isClear = true}) => dispatch => {
-  dispatch(requestPosts())
+export const fetchPosts = ({ currentNav, currentTab, page = 1, limit = 10, isClear = true }) => dispatch => {
+  dispatch(requestPosts());
   let axiosPromise = Promise.resolve();
   if ( currentNav === 'v2ex' ) {
     axiosPromise = axios.get(`${currentNav}/list/${currentTab}`);
@@ -21,7 +21,7 @@ export const fetchPosts = ({currentNav, currentTab, page = 1, limit = 10, isClea
     };
     axiosPromise = axios.get('https://cnodejs.org/api/v1/topics', params);
   }
-  return axiosPromise.then(items => dispatch(receivePosts({items, page, limit, isClear})));
+  return axiosPromise.then(items => dispatch(receivePosts({ items, page, limit, isClear })));
 };
 
 export const receivePosts = (itemInfo) => ({

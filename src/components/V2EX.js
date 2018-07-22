@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -7,19 +7,19 @@ class V2EX extends Component {
     posts: PropTypes.object.isRequired,
   };
   render() {
-    const {isFetching, items} = this.props.posts;
+    const { isFetching, items } = this.props.posts;
     return (
       <div>
         {
           isFetching ? <h1>加载中</h1> :
-          <ul>{items.map((item, index) => (<li key={index}>{item.title}</li>))}</ul>
+            <ul>{items.map((item, index) => (<li key={index}>{item.title}</li>))}</ul>
         }
       </div>
     );
   }
 }
 
-function mapStateToProps(state, ownProp) {
+function mapStateToProps(state) {
   return state;
 }
 

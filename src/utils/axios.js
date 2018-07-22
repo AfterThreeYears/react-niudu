@@ -26,8 +26,8 @@ const handleCheckLoadingStatus = () => {
 
 const handleGeneratorLoading = () => {
   return;
-  if (!loading) loading = null;
-  count += 1;
+  // if (!loading) loading = null;
+  // count += 1;
 };
 
 const getResponseSuccessInterceptor = (errorCallback) => (res) => {
@@ -35,7 +35,7 @@ const getResponseSuccessInterceptor = (errorCallback) => (res) => {
   // custom 当后端返回的数据为success为false，设置custom: true,可以使这个数据进行特定处理
   // useLoad true 为展示loading
   // skip true 为返回所有response
-  const {config} = res;
+  const { config } = res;
   if (config.useLoad) {
     handleCheckLoadingStatus();
   }
@@ -47,14 +47,14 @@ const getResponseSuccessInterceptor = (errorCallback) => (res) => {
   if (config.skip) return res;
   return res.data.data;
 };
-const getResponseErrorInterceptor = (errorCallback) => (error) => {
+const getResponseErrorInterceptor = (errorCallback) => () => {
   handleCheckLoadingStatus();
   errorCallback('506:系统开了个小差!');
   return Promise.reject();
 };
 
 const getRequestSuccessInterceptor = (config) => {
-  const {useLoad} = config;
+  const { useLoad } = config;
   if (useLoad) handleGeneratorLoading();
   return config;
 };

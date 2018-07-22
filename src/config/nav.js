@@ -49,7 +49,7 @@ const base = [
         title: 'R2',
         tab: 'r2',
       },
-    ]
+    ],
   },
   {
     title: 'NodeJS-Org',
@@ -58,29 +58,29 @@ const base = [
     tabs: [
       {
         title: '全部',
-        tab: 'all'
+        tab: 'all',
       },
       {
         title: '问答',
-        tab: 'ask'
+        tab: 'ask',
       },
       {
         title: '招聘',
-        tab: 'job'
+        tab: 'job',
       },
       {
         title: '分享',
-        tab: 'share'
+        tab: 'share',
       },
       {
         title: '精华',
-        tab: 'good'
+        tab: 'good',
       },
       {
         title: '测试',
-        tab: 'dev'
+        tab: 'dev',
       },
-    ]
+    ],
   },
 ];
 
