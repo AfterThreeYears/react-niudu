@@ -22,7 +22,7 @@ class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 1,
+      selectedIndex: pathMap[this.props.location.pathname],
     };
   }
   

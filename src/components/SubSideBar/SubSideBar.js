@@ -28,7 +28,7 @@ class SubSideBar extends Component {
       swiperViewWidth: getPropNumeric(this.swiperWrap, 'width'),
     });
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const oldNav = this.props.currentNav;
     const oldTab = this.props.currentTab;
     const { currentNav, currentTab } = nextProps;
