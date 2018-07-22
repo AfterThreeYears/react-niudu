@@ -1,5 +1,8 @@
 
-
+# 装饰器
 # list style
 # lazy img
-# loader more
+# pre-commit
+
+
+# fastdom

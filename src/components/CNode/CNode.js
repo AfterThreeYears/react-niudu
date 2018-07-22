@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ReactPullList from '@/components/ReactPullList/ReactPullList';
 import { fetchPosts } from '@/redux/actions';
+
+import styles from './CNode.css';
 
 class CNode extends Component {
   static propTypes = {
@@ -12,8 +15,17 @@ class CNode extends Component {
     posts: {},
     fetchPosts: () => {},
   }
-  handleMore = () => {
-    console.log(this);
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { subTabInfo } = this.props;
+    const oldNav = subTabInfo.currentNav;
+    const oldTab = subTabInfo.currentTab;
+    const { currentNav, currentTab } = nextProps.subTabInfo;
+    if ( oldNav === currentNav && oldTab === currentTab ) return;
+    // 导航不同或者tab不同都需要去清空列表
+    const isClear = oldNav !== currentNav || oldTab !== currentTab;
+    if (isClear) this.reactPullList.handleScrollTo(0);
+  }
+  handleLoaderMore = () => {
     const {
       currentNav,
       currentTab,
@@ -21,29 +33,35 @@ class CNode extends Component {
     const {
       page,
     } = this.props.posts;
-    
-    this.props.fetchPosts({
+    return this.props.fetchPosts({
       currentNav,
       currentTab,
       page: page + 1,
       isClear: false,
     });
   }
-  render() {
-    const { isFetching, items } = this.props.posts;
+  itemRenderer = (index, key) => {
+    const { items } = this.props.posts;
     return (
-      <div>
-        {
-          isFetching ? <h1>cnode加载中</h1> :
-            <ul>{items.map((item, index) => (<li key={index}>{index}-{item.title}</li>))}</ul>
-        }
-        <button onClick={this.handleMore}>click</button>
-      </div>
+      <div className={styles.item} key={key}>{key}-{items[index].title}</div>
+    );
+  };
+  render() {
+    const { items } = this.props.posts;
+    const { height } = this.props.globalInfo;
+    return (
+      <ReactPullList
+        ref={ref => this.reactPullList = ref}
+        itemRenderer={this.itemRenderer}
+        items={items}
+        handleLoaderMore={this.handleLoaderMore}
+        style={{ height: `${height}px` }}
+      />
     );
   }
 }
 
-function mapStateToProps(state, ownProp) {
+function mapStateToProps(state) {
   return state;
 }
 

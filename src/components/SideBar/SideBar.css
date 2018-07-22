@@ -7,8 +7,9 @@
 }
 
 .wrap {
-  position: fixed;
+  /* position: fixed;
+  top: 0; */
   background: #fff;
-  top: 0;
   width: 10rem;
+  height: 0.78rem;
 }

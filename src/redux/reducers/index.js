@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { REQUEST_POSTS, RECEIVE_POSTS, SET_NAV_INFO } from '../actions';
+import { REQUEST_POSTS, RECEIVE_POSTS, SET_NAV_INFO, SET_HEIGHT } from '../actions';
 
 const posts = (state = {
   isFetching: false,
@@ -47,10 +47,21 @@ const subTabInfo = (state = {
   return state;
 };
 
+const globalInfo = (state = {
+  height: 0,
+}, { type, globalInfo }) => {
+  if (type === SET_HEIGHT) return {
+    ...state,
+    height: globalInfo.height,
+  };
+  return state;
+};
+
 
 const reducer = combineReducers({
   posts,
   subTabInfo,
+  globalInfo,
 });
 
 export default reducer;

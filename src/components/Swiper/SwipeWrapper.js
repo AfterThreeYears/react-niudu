@@ -25,36 +25,27 @@ class SwipeWrapper extends Component {
     super(props);
     this.state = {
       transformX: this.props.initX,
-      curIndex: this.props.index,
       cursorDatas: [],
     };
-  }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.index !== prevState.curIndex) {
-      return {
-        curIndex: nextProps.index,
-      };
-    }
-    return null;
   }
   componentDidMount() {
     this.init();
   }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.index !== prevState.curIndex) {
-      console.log('update', 'old is', prevState.curIndex, 'new is ', this.props.index);
-      this.changeIndexUpdateTransformX();
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props.index !== nextProps.index) {
+      this.changeIndexUpdateTransformX(nextProps);
     }
   }
   init() {
     // 展示给用户的swipe宽度
-    const { swiperViewWidth } = this.props;
+    const { swiperViewWidth, initX } = this.props;
     // 整个swipe的宽度
     const swiperFullWidth = getPropNumeric(this.swipeContainer, 'width');
     // 最大可以滑动的值
     const maxTransformX = swiperViewWidth - swiperFullWidth;
     const noNeedTouchEvent = maxTransformX >= 0;
     this.setState({
+      transformX: initX,
       swiperFullWidth,
       maxTransformX,
       noNeedTouchEvent,
@@ -62,19 +53,20 @@ class SwipeWrapper extends Component {
     });
   }
   handleTouchStart = (e) => {
-    const { noNeedTouchEvent } = this.state;
-    console.log(noNeedTouchEvent);
+    const { noNeedTouchEvent, transformX } = this.state;
     if (noNeedTouchEvent) return;
     this.removeTransition();
     const { x } = this.getTouchPosition(e);
     this.setState({
       startTime: Date.now(),
-      startX: this.state.transformX,
+      startX: transformX,
       // 手指按下的x
       prevTouchX: x,
     });
   }
   handleTouchMove = (e) => {
+    const { noNeedTouchEvent } = this.state;
+    if (noNeedTouchEvent) return;
     e.preventDefault();
     const { x } = this.getTouchPosition(e);
     let swipeX = this.state.transformX + x - this.state.prevTouchX;
@@ -85,6 +77,8 @@ class SwipeWrapper extends Component {
     });
   }
   handleTouchEnd = () => {
+    const { noNeedTouchEvent } = this.state;
+    if (noNeedTouchEvent) return;
     this.addTransition();
     this.resetTransition();
     this.startAutoScroll();
@@ -140,8 +134,8 @@ class SwipeWrapper extends Component {
       this.setTransformX(maxTransformX);
     }
   }
-  changeIndexUpdateTransformX = () => {
-    const { index, swiperViewWidth } = this.props;
+  changeIndexUpdateTransformX = (nextProps) => {
+    const { index, swiperViewWidth } = nextProps;
     const { swiperFullWidth, cursorDatas } = this.state;
     if (index <= 0) {
       this.setTransformX(0);
@@ -162,8 +156,9 @@ class SwipeWrapper extends Component {
     this.setTransformX(fixedX);
   }
   repositionCursor = () => {
-    const { curIndex, cursorDatas } = this.state;
-    const ele = cursorDatas[curIndex];
+    const { cursorDatas } = this.state;
+    const { index } = this.props;
+    const ele = cursorDatas[index];
     if (!ele) return {};
     const span = ele.querySelector('span');
     if (!span) return {};

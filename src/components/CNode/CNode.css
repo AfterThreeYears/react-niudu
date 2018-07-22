@@ -1,0 +1,9 @@
+.tloader {
+  height: 500px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+.item {
+  height: 40px
+}
