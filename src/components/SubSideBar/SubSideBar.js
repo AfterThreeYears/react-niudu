@@ -82,7 +82,7 @@ class SubSideBar extends Component {
                         [styles.item]: true,
                       })}
                     >
-                      {title}-{index}
+                      {title}
                     </span>
                   </SwipeItem>
                 );

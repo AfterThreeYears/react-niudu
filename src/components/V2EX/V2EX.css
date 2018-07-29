@@ -1,0 +1,83 @@
+.List {
+  font-size: 0.4rem;
+  border-bottom: 1px solid #ccc;
+  margin: 0.2rem 0.2rem;
+  overflow: hidden;
+}
+
+.List:last-child {
+  border: 0;
+}
+
+.title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 0.4rem;
+  margin: 0.2rem 0.2rem 0.2rem 0;
+  line-height: 0.5rem;
+}
+
+.detail-info {
+  float: left;
+  width: calc(100% - 0.9rem);
+}
+
+.detail-imgWrap {
+  float: left;
+  height: 0.7rem;
+  width: 0.7rem;
+  margin-right: 0.2rem;
+}
+
+.detail-info-img {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.detail-loginname {
+  color: #778087;
+  word-break: break-all;
+  font-size: 0.35rem;
+}
+
+.last_reply_at-wrap {
+  display: flex;
+  align-items: center;
+  font-size: 0.3rem;
+}
+
+.detail-last_reply_at {
+  color: #ccc;
+  margin-right: 0.2rem;
+}
+
+.detail-tab-info {
+  display: flex;
+  align-items: center;
+}
+
+.detail-tab {
+  margin-right: 0.2rem;
+  background-color: #f5f5f5;
+  font-size: 0.35rem;
+  padding: 0.05rem 0;
+  border-radius: 2px;
+  color: #999;
+  text-align: center;
+}
+
+.badge {
+  background-color: #26a2ff;
+  font-size: .32rem;
+  padding: .05rem .25rem;
+  color: #fff;
+  text-align: center;
+  display: inline-block;
+  border-radius: 18px;
+}

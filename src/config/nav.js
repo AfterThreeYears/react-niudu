@@ -84,8 +84,6 @@ const base = [
   },
 ];
 
-
-
 const test = [
   {
     title: '知乎日报',
@@ -94,7 +92,7 @@ const test = [
   },
   {
     title: 'test',
-    id: 2,
+    id: 3,
     url: 'test',
   },
 ];
@@ -102,9 +100,7 @@ const test = [
 let nav = [];
 
 if (isProd) {
-  nav = [
-    ...base,
-  ];
+  nav = base;
 } else {
   nav = [
     ...base,
@@ -118,3 +114,4 @@ export const pathMap = {
   '/v2ex': 0,
   '/cnode': 1,
 };
+
