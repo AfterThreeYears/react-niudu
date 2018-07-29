@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import qs from 'qs';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
 import { fetchPosts } from '@/redux/actions';
 import { dateDiff } from '@/utils/time';
@@ -29,6 +31,10 @@ class CNode extends Component {
     const isClear = oldNav !== currentNav || oldTab !== currentTab;
     if (isClear) this.reactPullList.handleScrollTo(0);
   }
+  componentDidUpdate() {
+    const search = qs.parse(this.props.location.search.substr(1));
+    this.reactPullList.handleScrollTo(search.index);
+  }
   handleLoaderMore = () => {
     const {
       currentNav,
@@ -44,17 +50,24 @@ class CNode extends Component {
       isClear: false,
     });
   }
+  handleJump = (id) => {
+    const index = this.reactPullList.reactList.getVisibleRange()[0];
+    this.props.history.push(`/cnode?index=${index}`);
+    this.props.history.push(`/cnode/detail/${id}`);
+  }
   itemRenderer = (index, key) => {
     const items = this.convertField();
     const item = items[index];
     return (
       <div className={styles.list} key={key}>
-        <Link to={`/cnode/detail/${item.id}`}>
+        <a onClick={() => this.handleJump(item.id)}>
           <h3 className={styles.title}>{item.title}</h3>
           <div className={styles.detail}>
             <div className={styles['detail-info']}>
               <section className={styles['detail-imgWrap']}>
-                <img src={item.author.avatar_url} className={styles['detail-info-img']} />
+                <LazyLoad offsetTop={200} height={'1rem'}>
+                  <img src={item.author.avatar_url} className={styles['detail-info-img']} />
+                </LazyLoad>
               </section>
               <p className={classnames({
                 'text-ellipsis': true,
@@ -75,7 +88,7 @@ class CNode extends Component {
               </div>
             </div>
           </div>
-        </Link>
+        </a>
       </div>
     );
   };
@@ -107,4 +120,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchPosts,
-})(CNode);
+})(withRouter(CNode));

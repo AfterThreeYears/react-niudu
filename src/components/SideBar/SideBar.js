@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-// import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
@@ -13,16 +12,10 @@ import { handleSetNavInfo } from '@/redux/actions';
 import styles from '@/components/SideBar/SideBar.css';
 
 class SideBar extends Component {
-  static propTypes = {
-    
-  };
-  
-  static defaultProps = {
-  };
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: pathMap[this.props.location.pathname],
+      selectedIndex: pathMap[this.props.location.pathname] || 0,
     };
   }
   

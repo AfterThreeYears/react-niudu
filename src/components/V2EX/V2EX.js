@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import qs from 'qs';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
+import { fetchPosts } from '@/redux/actions';
 
 import styles from './V2EX.css';
 
@@ -11,6 +14,9 @@ class V2EX extends Component {
   static propTypes = {
     posts: PropTypes.object.isRequired,
   };
+  static defaultProps = {
+    posts: {},
+  }
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { subTabInfo } = this.props;
     const oldNav = subTabInfo.currentNav;
@@ -21,14 +27,20 @@ class V2EX extends Component {
     const isClear = oldNav !== currentNav || oldTab !== currentTab;
     if (isClear) this.reactPullList.handleScrollTo(0);
   }
+  componentDidUpdate() {
+    const search = qs.parse(this.props.location.search.substr(1));
+    this.reactPullList.handleScrollTo(search.index);
+  }
   itemRenderer = (index) => {
     const items = this.convertField();
     const item = items[index];
     return (
       <div className={styles.List} key={index}>
-        <Link to={`/v2ex/detail/${item.id}`}>
+        <a onClick={() => this.handleJump(item.id)}>
           <section className={styles['detail-imgWrap']}>
-            <img src={item.avatar} className={styles['detail-info-img']} />
+            <LazyLoad offsetTop={200} height={'0.7rem'}>
+              <img src={item.avatar} className={styles['detail-info-img']} />
+            </LazyLoad>
           </section>
           <div className={styles['detail-info']}>
             <div className={styles['detail-tab-info']}>
@@ -50,12 +62,17 @@ class V2EX extends Component {
               <p>{item.last_reply}</p>
             </div>
           </div>
-        </Link>
+        </a>
       </div>
     );
   };
   convertField = () => {
     return this.props.posts.items;
+  }
+  handleJump = (id) => {
+    const index = this.reactPullList.reactList.getVisibleRange()[0];
+    this.props.history.push(`/v2ex?index=${index}`);
+    this.props.history.push(`/v2ex/detail/${id}`);
   }
   render() {
     const { items } = this.props.posts;
@@ -77,4 +94,4 @@ function mapStateToProps(state) {
   return state;
 }
 
-export default connect(mapStateToProps)(V2EX);
+export default connect(mapStateToProps)(withRouter(V2EX));

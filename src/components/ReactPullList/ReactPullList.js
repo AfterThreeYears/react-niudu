@@ -23,6 +23,8 @@ export default class ReactPullList extends Component {
     isNoMoreData: PropTypes.bool,
     // 是否正在加载中
     isFetching: PropTypes.bool,
+    // 每次显示多少条
+    pageSize: PropTypes.number,
   };
   static defaultProps = {
     throttleTime: 100,
@@ -31,6 +33,7 @@ export default class ReactPullList extends Component {
     isNoMoreData: false,
     isFetching: false,
     handleLoaderMore: () => {},
+    pageSize: 100,
   }
   constructor(props) {
     super(props);
@@ -62,7 +65,7 @@ export default class ReactPullList extends Component {
     this.setState({ loading: status }, cb);
   }
   render() {
-    const { itemRenderer, items, style, isNoMoreData, isFetching } = this.props;
+    const { itemRenderer, items, style, isNoMoreData, isFetching, pageSize } = this.props;
     
     return (
       <div style={{ overflowY: 'auto', overflowX: 'hidden', ...style }} onScroll={this.handleWrapScroll}>
@@ -70,6 +73,7 @@ export default class ReactPullList extends Component {
           ref={ref => this.reactList = ref}
           length={items.length}
           itemRenderer={itemRenderer}
+          pageSize={pageSize}
         />
         {isFetching ?
           <p className={styles.tip}>加载中...</p> :
