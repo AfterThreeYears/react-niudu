@@ -1,0 +1,14 @@
+.mask {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.hide {
+  display: none;
+}

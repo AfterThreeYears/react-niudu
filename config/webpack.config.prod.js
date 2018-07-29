@@ -213,7 +213,6 @@ module.exports = {
               )
             ),
             exclude: [
-              path.resolve(__dirname, "node_modules/swiper/dist/css/swiper.min.css"),
             ],
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },

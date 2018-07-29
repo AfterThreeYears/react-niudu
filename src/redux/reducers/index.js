@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux';
-import { REQUEST_POSTS, RECEIVE_POSTS, SET_NAV_INFO, SET_HEIGHT } from '../actions';
+import { RECEIVE_POSTS, SET_NAV_INFO, SET_HEIGHT, SET_FETCH } from '../actions';
 
 const posts = (state = {
-  isFetching: false,
   items: [],
   page: 1,
   limit: 10,
@@ -13,17 +12,11 @@ const posts = (state = {
     type,
   } = action;
   switch (type) {
-  case REQUEST_POSTS:
-    return {
-      ...state,
-      isFetching: true,
-    };
   case RECEIVE_POSTS:
     const { isClear, items } = itemInfo;
     const baseState = {
       ...state,
       ...action.itemInfo,
-      isFetching: false,
     };
     if (isClear) return baseState;
     return {
@@ -49,12 +42,22 @@ const subTabInfo = (state = {
 
 const globalInfo = (state = {
   height: 0,
+  isFetching: false,
 }, { type, globalInfo }) => {
-  if (type === SET_HEIGHT) return {
-    ...state,
-    height: globalInfo.height,
-  };
-  return state;
+  switch (type) {
+  case SET_HEIGHT:
+    return {
+      ...state,
+      height: globalInfo.height,
+    };
+  case SET_FETCH:
+    return {
+      ...state,
+      isFetching: globalInfo.isFetching,
+    };
+  default:
+    return state;
+  }
 };
 
 

@@ -7,13 +7,10 @@ class V2EX extends Component {
     posts: PropTypes.object.isRequired,
   };
   render() {
-    const { isFetching, items } = this.props.posts;
+    const { items } = this.props.posts;
     return (
       <div>
-        {
-          isFetching ? <h1>加载中</h1> :
-            <ul>{items.map((item, index) => (<li key={index}>{item.title}</li>))}</ul>
-        }
+        <ul>{items.map((item, index) => (<li key={index}>{item.title}</li>))}</ul>
       </div>
     );
   }

@@ -1,16 +1,12 @@
 import axios from 'axios';
 
-export const REQUEST_POSTS = 'REQUEST_POSTS';
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const SET_NAV_INFO = 'SET_NAV_INFO';
 export const SET_HEIGHT = 'SET_HEIGHT';
-
-export const requestPosts = () => ({
-  type: REQUEST_POSTS,
-});
+export const SET_FETCH = 'SET_FETCH';
 
 export const fetchPosts = ({ currentNav, currentTab, page = 1, limit = 40, isClear = true }) => dispatch => {
-  dispatch(requestPosts());
+  dispatch(handleSetFetch(true));
   let axiosPromise = Promise.resolve();
   if ( currentNav === 'v2ex' ) {
     axiosPromise = axios.get(`${currentNav}/list/${currentTab}`);
@@ -22,7 +18,9 @@ export const fetchPosts = ({ currentNav, currentTab, page = 1, limit = 40, isCle
     };
     axiosPromise = axios.get('https://cnodejs.org/api/v1/topics', { params });
   }
-  return axiosPromise.then(items => dispatch(receivePosts({ items, page, limit, isClear })));
+  return axiosPromise
+    .then(items => dispatch(receivePosts({ items, page, limit, isClear })))
+    .then(() => dispatch(handleSetFetch(false)));
 };
 
 export const receivePosts = (itemInfo) => ({
@@ -43,3 +41,8 @@ export const handleSetGlobalInfo = (globalInfo) => dispatch => {
     globalInfo,
   });
 };
+
+export const handleSetFetch = (isFetching) => ({
+  type: SET_FETCH,
+  globalInfo: { isFetching },
+});

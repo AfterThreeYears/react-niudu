@@ -9,6 +9,7 @@ import CNode from '@/components/CNode/CNode';
 import V2EXDetail from '@/components/V2EXDetail';
 import SideBar from '@/components/SideBar/SideBar';
 import SubSideBar from '@/components/SubSideBar/SubSideBar';
+import Indicator from '@/components/Indicator/Indicator';
 import { handleSetGlobalInfo } from '@/redux/actions';
 
 import styles from '@/styles/index.css';
@@ -22,9 +23,11 @@ class App extends Component {
     this.props.handleSetGlobalInfo({ height });
   }
   render() {
+    const { isFetching } = this.props;
     return (
       <Router>
         <div className={styles.content }>
+          <Indicator isFetching={isFetching} />
           <SideBar getInstance={ref => this.SideBar = ref}  />
           <SubSideBar getInstance={ref => this.SubSideBar = ref}  />
           <Route path="/v2ex" component={V2EX} />

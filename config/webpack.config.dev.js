@@ -23,8 +23,8 @@ const publicUrl = '';
 const env = getClientEnvironment(publicUrl);
 
 const cssPath = [
-  path.resolve(__dirname, '../node_modules/swiper/dist/css/swiper.css'),
   path.resolve(__dirname, '../node_modules/html5-reset/assets/css/reset.css'),
+  path.resolve(__dirname, '../node_modules/react-activity/lib/Spinner/Spinner.css'),
 ];
 
 const postcssLoader = {
