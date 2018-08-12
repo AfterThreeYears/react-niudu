@@ -40,10 +40,7 @@ export default class CNodeDetail extends Component {
           <section className={styles['CNodeDetail-section']}>
             <div className={styles['CNodeDetail-section-content']}>
               <p className={styles['CNodeDetail-loginname']}>{loginname}</p>
-              <section
-                className={'markdown-body'}
-                dangerouslySetInnerHTML={{ __html: content }}
-              />
+              <MarkDown content={content} />
               <span>{createStr}</span>
             </div>
             <p className={styles['CNodeDetailFloor']}>{floor}楼</p>

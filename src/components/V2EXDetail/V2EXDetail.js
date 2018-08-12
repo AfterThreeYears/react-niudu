@@ -24,8 +24,8 @@ export default class V2EXDetail extends Component {
       return (<section key={key}>
         <h2 className={styles['v2exDetail-title']}>{title}</h2>
         <hr />
-        <MarkDown classnames={ styles['v2exDetail-info'] } content={lastReply} />
-        <MarkDown classnames={ styles['v2exDetail-content'] } content={markdown} />
+        <MarkDown content={lastReply} />
+        <MarkDown content={markdown} />
         <hr />
       </section>);
     } 

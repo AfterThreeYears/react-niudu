@@ -6,6 +6,7 @@ import CNode from '@/components/CNode/CNode';
 import V2EXDetail from '@/components/V2EXDetail/V2EXDetail';
 import CNodeDetail from '@/components/CNodeDetail/CNodeDetail';
 import Indicator from '@/components/Indicator/Indicator';
+import NotFound from '@/components/NotFound/NotFound';
 import { handleSetGlobalInfo } from '@/redux/actions';
 import BarWrap from '@/components/BarWrap/BarWrap';
 
@@ -42,6 +43,7 @@ class App extends Component {
               </div>
             )} />
             <Route path="/cnode/detail/:id" exact component={CNodeDetail} />
+            <Route path="/404" exact component={NotFound} />
           </Switch> 
         </div>
       </BrowserRouter>

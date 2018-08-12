@@ -6,8 +6,10 @@ import {
   SET_HEIGHT,
   SET_FETCH,
   RECEIVE_CNODE_REPLYS,
+  RECOVER_CNODE,
   RECEIVE_V2EX_REPLYS,
   RECEIVE_V2EX_ISNOMORE,
+  RECOVER_V2EX,
 } from '../actions';
 
 const posts = (state = {
@@ -77,13 +79,15 @@ const cnodeDetail = (state = {}, action) => {
   switch (type) {
   case RECEIVE_CNODE_REPLYS:
     return res;
+  case RECOVER_CNODE:
+    return {};
   default:
     return state;
   }
 };
 
-const v2exDetail = (state = { res: { isNoMoreData: false }, pageIndex: 1 }, action) => {
-  const { data, type } = action;
+const v2exDetail = (state = { res: { replier: [], isNoMoreData: false }, pageIndex: 1 }, action) => {
+  const { data = { res: { replier: [], isNoMoreData: false }, pageIndex: 1 }, type } = action;
   switch (type) {
   case RECEIVE_V2EX_REPLYS:
     return {
@@ -93,6 +97,8 @@ const v2exDetail = (state = { res: { isNoMoreData: false }, pageIndex: 1 }, acti
         replier: [ ...(state.res.replier || []), ...data.res.replier ],
       },
     };
+  case RECOVER_V2EX:
+    return data;
   case RECEIVE_V2EX_ISNOMORE:
     return {
       ...state,

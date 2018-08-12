@@ -11,6 +11,10 @@ html, body, :global(#root) {
   min-height: 100%;
 }
 
+:global(.no-touch) {
+  touch-action: none;
+}
+
 a {
   text-decoration: none;
   color: initial;
@@ -18,7 +22,6 @@ a {
 
 * {
   box-sizing: border-box;
-  font-size: 0.3rem;
 }
 
 ol, ul, li {

@@ -16,7 +16,7 @@ export default class MarkDown extends Component {
     const { content, classnames } = this.props;
     return (
       <section
-        className={`markdown-body ${classnames}`}
+        className={`markdown-body uiMarkdown ${classnames}`}
         dangerouslySetInnerHTML={{ __html: content }}
       />
     );

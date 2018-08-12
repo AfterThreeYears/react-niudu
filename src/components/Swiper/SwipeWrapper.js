@@ -177,7 +177,7 @@ class SwipeWrapper extends Component {
   render() {
     const { isShowCursor } = this.props;
     return (
-      <div className={'swiper-wrap'} ref={ref => this.swiperWrap = ref}>
+      <div className={'swiper-wrap no-touch'} ref={ref => this.swiperWrap = ref}>
         <div
           className={'swiper-container'}
           ref={ref => this.swipeContainer = ref}

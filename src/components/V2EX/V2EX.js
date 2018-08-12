@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
+import { handleRecoverV2EXDetail } from '@/redux/actions/index';
 
 import styles from './V2EX.css';
 
-@connect(state => state)
+@connect(state => state, { handleRecoverV2EXDetail })
 export default class V2EX extends Component {
   static propTypes = {
     posts: PropTypes.object.isRequired,
@@ -69,6 +70,7 @@ export default class V2EX extends Component {
     return this.props.posts.items;
   }
   handleJump = (id) => {
+    this.props.handleRecoverV2EXDetail();
     const index = this.reactPullList.reactList.getVisibleRange()[0];
     this.props.history.push(`/v2ex?index=${index}`);
     this.props.history.push(`/v2ex/detail/${id}`);

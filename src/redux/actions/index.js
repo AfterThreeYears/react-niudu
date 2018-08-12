@@ -9,6 +9,8 @@ export const SET_NOMORE = 'SET_NOMORE';
 export const RECEIVE_CNODE_REPLYS = 'RECEIVE_CNODE_REPLYS';
 export const RECEIVE_V2EX_REPLYS = 'RECEIVE_V2EX_REPLYS';
 export const RECEIVE_V2EX_ISNOMORE = 'RECEIVE_V2EX_ISNOMORE';
+export const RECOVER_V2EX = 'RECOVER_V2EX';
+export const RECOVER_CNODE = 'RECOVER_CNODE';
 
 export const fetchPosts = ({ currentNav, currentTab, page = 1, limit = 40, isClear = true }) => dispatch => {
   // 如果改变了类型，需要清空当前列表
@@ -66,6 +68,8 @@ export const handleSetNoMore = (isNoMoreData) => ({
 
 export const handleSetCNodeDetail = (res) => ({ type: RECEIVE_CNODE_REPLYS, res });
 
+export const handleRecoverCNodeDetail = () => ({ type: RECOVER_CNODE });
+
 export const handleFetchCNodeDetail = ({ id }) => {
   return async dispatch => {
     dispatch(handleSetFetch(true));
@@ -86,6 +90,8 @@ export const handleFetchCNodeDetail = ({ id }) => {
 };
 
 export const handleSetV2EXDetail = (data) => ({ type: RECEIVE_V2EX_REPLYS, data });
+
+export const handleRecoverV2EXDetail = () => ({ type: RECOVER_V2EX });
 
 export const handleSetV2EXisNoMore = (data) => ({ type: RECEIVE_V2EX_ISNOMORE, data });
 

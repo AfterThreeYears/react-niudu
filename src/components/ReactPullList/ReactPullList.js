@@ -66,7 +66,11 @@ export default class ReactPullList extends Component {
     
     return (
       <div
-        style={{ overflowY: 'auto', overflowX: 'hidden', ...style }}
+        style={{
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
+          ...style }}
         onScroll={throttle(this.handleScroll, throttleTime)}
       >
         <ReactList
