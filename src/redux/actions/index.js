@@ -1,10 +1,12 @@
 import axios from 'axios';
+import { dateDiff } from '@/utils/time';
 
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 export const SET_NAV_INFO = 'SET_NAV_INFO';
 export const SET_HEIGHT = 'SET_HEIGHT';
 export const SET_FETCH = 'SET_FETCH';
 export const SET_NOMORE = 'SET_NOMORE';
+export const RECEIVE_REPLYS = 'RECEIVE_REPLYS';
 
 export const fetchPosts = ({ currentNav, currentTab, page = 1, limit = 40, isClear = true }) => dispatch => {
   // 如果改变了类型，需要清空当前列表
@@ -59,3 +61,24 @@ export const handleSetNoMore = (isNoMoreData) => ({
   type: SET_NOMORE,
   globalInfo: { isNoMoreData },
 });
+
+export const handleSetCNodeDetail = (res) => ({ type: RECEIVE_REPLYS, res });
+
+export const handleFetchCNodeDetail = ({ id }) => {
+  return async dispatch => {
+    dispatch(handleSetFetch(true));
+    let res;
+    try {
+      res = await axios.get(`https://cnodejs.org/api/v1/topic/${id}`);
+      res.createStr = dateDiff(new Date(res.create_at));
+      (res.replies || []).forEach((item) => {
+        item.createStr = dateDiff(new Date(item.create_at));
+      });
+    } catch (error) {
+      console.error('error', error); // eslint-disable-line
+      res = { message: error.message };
+    }
+    dispatch(handleSetFetch(false));
+    dispatch(handleSetCNodeDetail(res));
+  };
+};

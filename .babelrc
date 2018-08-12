@@ -1,0 +1,7 @@
+{
+  "plugins": [
+    "lodash",
+    "transform-decorators-legacy"
+  ],
+  "presets": ["react-app", ["env", { "targets": { "node": 6 } }]]
+}

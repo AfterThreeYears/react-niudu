@@ -1,5 +1,12 @@
 import { combineReducers } from 'redux';
-import { SET_NOMORE, RECEIVE_POSTS, SET_NAV_INFO, SET_HEIGHT, SET_FETCH } from '../actions';
+import {
+  SET_NOMORE,
+  RECEIVE_POSTS,
+  SET_NAV_INFO,
+  SET_HEIGHT,
+  SET_FETCH,
+  RECEIVE_REPLYS,
+} from '../actions';
 
 const posts = (state = {
   items: [],
@@ -63,11 +70,22 @@ const globalInfo = (state = {
   }
 };
 
+const cnodeDetail = (state = {}, action) => {
+  const { res, type } = action;
+  switch (type) {
+  case RECEIVE_REPLYS:
+    return res;
+  default:
+    return state;
+  }
+};
+
 
 const reducer = combineReducers({
   posts,
   subTabInfo,
   globalInfo,
+  cnodeDetail,
 });
 
 export default reducer;

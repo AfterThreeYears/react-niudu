@@ -6,13 +6,18 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
-import { fetchPosts } from '@/redux/actions';
+import { handleSetCNodeDetail, fetchPosts } from '@/redux/actions';
 import { dateDiff } from '@/utils/time';
 import { cnodeTag } from '@/utils/tag';
 
 import styles from './CNode.css';
 
-class CNode extends Component {
+@connect(state => state, {
+  fetchPosts,
+  handleSetCNodeDetail,
+})
+@withRouter
+export default class CNode extends Component {
   static propTypes = {
     posts: PropTypes.object.isRequired,
     fetchPosts: PropTypes.func.isRequired,
@@ -52,6 +57,7 @@ class CNode extends Component {
   }
   handleJump = (id) => {
     const index = this.reactPullList.reactList.getVisibleRange()[0];
+    this.props.handleSetCNodeDetail({});
     this.props.history.push(`/cnode?index=${index}`);
     this.props.history.push(`/cnode/detail/${id}`);
   }
@@ -113,11 +119,3 @@ class CNode extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return state;
-}
-
-export default connect(mapStateToProps, {
-  fetchPosts,
-})(withRouter(CNode));

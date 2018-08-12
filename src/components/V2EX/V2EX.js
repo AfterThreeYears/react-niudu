@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
-import { fetchPosts } from '@/redux/actions';
 
 import styles from './V2EX.css';
 
