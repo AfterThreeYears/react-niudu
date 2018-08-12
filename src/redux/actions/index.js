@@ -102,7 +102,6 @@ export const handleFetchV2EXDetail = ({ id, pageIndex }) => {
     let res;
     try {
       res = await axios.get(`/v2ex/detail/${id}?pageIndex=${pageIndex}`);
-      res.isNoMoreData = false;
     } catch (error) {
       console.error('error', error); // eslint-disable-line
       res = { message: error.message, data: { isNoMoreData: true } };
