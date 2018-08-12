@@ -5,7 +5,9 @@ import SideBar from '@/components/SideBar/SideBar';
 import SubSideBar from '@/components/SubSideBar/SubSideBar';
 import { handleSetGlobalInfo } from '@/redux/actions';
 
-class BarWrap extends Component {
+@withRouter
+@connect(({ globalInfo }) => globalInfo, { handleSetGlobalInfo })
+export default class BarWrap extends Component {
   constructor(props) {
     super(props);
   }
@@ -22,11 +24,3 @@ class BarWrap extends Component {
     );
   }
 }
-
-function mapStateToProps({ globalInfo }) {
-  return globalInfo;
-}
-
-export default withRouter(connect(mapStateToProps, {
-  handleSetGlobalInfo,
-})(BarWrap));

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import LazyLoad from 'react-lazy-load';
 import { handleFetchCNodeDetail } from '@/redux/actions/index';
 import { cnodeMap } from '@/config/nav';
 
@@ -27,11 +28,13 @@ export default class CNodeDetail extends Component {
           className={styles['CNodeDetail-replyList']}
         >
           <div className={styles['CNodeDetail-headPic-wrap']}>
-            <img
-              src={avatar_url}
-              alt={avatar_url}
-              className={styles['CNodeDetail-headPic']}
-            />
+            <LazyLoad offsetTop={200} height={'0.8rem'}>
+              <img
+                src={avatar_url}
+                alt={avatar_url}
+                className={styles['CNodeDetail-headPic']}
+              />
+            </LazyLoad>
           </div>
           <section className={styles['CNodeDetail-section']}>
             <div className={styles['CNodeDetail-section-content']}>

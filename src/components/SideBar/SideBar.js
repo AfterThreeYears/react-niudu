@@ -11,7 +11,12 @@ import { handleSetNavInfo } from '@/redux/actions';
 
 import styles from '@/components/SideBar/SideBar.css';
 
-class SideBar extends Component {
+@withRouter
+@connect(null, {
+  handleSetNavInfo,
+})
+@withRef
+export default  class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -70,7 +75,3 @@ class SideBar extends Component {
     );
   }
 }
-
-export default withRouter(connect(null, {
-  handleSetNavInfo,
-})(withRef(SideBar)));

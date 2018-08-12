@@ -10,7 +10,12 @@ import { getPropNumeric } from '@/utils/styles';
 
 import styles from '@/components/SubSideBar/SubSideBar.css';
 
-class SubSideBar extends Component {
+@connect(({ subTabInfo }) => subTabInfo, {
+  fetchPosts,
+  handleSetNavInfo,
+})
+@withRef
+export default class SubSideBar extends Component {
   static propTypes = {
     fetchPosts: PropTypes.func.isRequired,
     tabs: PropTypes.array.isRequired,
@@ -93,12 +98,3 @@ class SubSideBar extends Component {
     );
   }
 }
-
-function mapStateToProps({ subTabInfo }) {
-  return subTabInfo;
-}
-
-export default connect(mapStateToProps, {
-  fetchPosts,
-  handleSetNavInfo,
-})((withRef(SubSideBar)));

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -9,7 +8,8 @@ import ReactPullList from '@/components/ReactPullList/ReactPullList';
 
 import styles from './V2EX.css';
 
-class V2EX extends Component {
+@connect(state => state)
+export default class V2EX extends Component {
   static propTypes = {
     posts: PropTypes.object.isRequired,
   };
@@ -88,9 +88,3 @@ class V2EX extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return state;
-}
-
-export default connect(mapStateToProps)(withRouter(V2EX));
