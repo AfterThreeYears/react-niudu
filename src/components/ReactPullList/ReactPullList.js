@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactList from 'react-list';
-import { throttle } from 'lodash';
+import throttle from 'lodash/throttle';
 
 import styles from './ReactPullList.css';
 
@@ -41,9 +41,6 @@ export default class ReactPullList extends Component {
       loading: false,
     };
   }
-  componentDidMount() {
-    this.handleWrapScroll = throttle(this.handleScroll, this.props.throttleTime);
-  }
   handleScrollTo(index) {
     this.reactList.scrollTo(index);
   }
@@ -65,10 +62,13 @@ export default class ReactPullList extends Component {
     this.setState({ loading: status }, cb);
   }
   render() {
-    const { itemRenderer, items, style, isNoMoreData, isFetching, pageSize } = this.props;
+    const { itemRenderer, items, style, isNoMoreData, isFetching, pageSize, throttleTime } = this.props;
     
     return (
-      <div style={{ overflowY: 'auto', overflowX: 'hidden', ...style }} onScroll={this.handleWrapScroll}>
+      <div
+        style={{ overflowY: 'auto', overflowX: 'hidden', ...style }}
+        onScroll={throttle(this.handleScroll, throttleTime)}
+      >
         <ReactList
           ref={ref => this.reactList = ref}
           length={items.length}

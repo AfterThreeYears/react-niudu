@@ -24,7 +24,7 @@ export default class Indicator extends Component {
       >
         <Spinner
           color="#000"
-          size={32}
+          size={'1rem'}
           speed={1}
           animating={true}
         />

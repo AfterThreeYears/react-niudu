@@ -6,7 +6,9 @@ export const SET_NAV_INFO = 'SET_NAV_INFO';
 export const SET_HEIGHT = 'SET_HEIGHT';
 export const SET_FETCH = 'SET_FETCH';
 export const SET_NOMORE = 'SET_NOMORE';
-export const RECEIVE_REPLYS = 'RECEIVE_REPLYS';
+export const RECEIVE_CNODE_REPLYS = 'RECEIVE_CNODE_REPLYS';
+export const RECEIVE_V2EX_REPLYS = 'RECEIVE_V2EX_REPLYS';
+export const RECEIVE_V2EX_ISNOMORE = 'RECEIVE_V2EX_ISNOMORE';
 
 export const fetchPosts = ({ currentNav, currentTab, page = 1, limit = 40, isClear = true }) => dispatch => {
   // 如果改变了类型，需要清空当前列表
@@ -62,7 +64,7 @@ export const handleSetNoMore = (isNoMoreData) => ({
   globalInfo: { isNoMoreData },
 });
 
-export const handleSetCNodeDetail = (res) => ({ type: RECEIVE_REPLYS, res });
+export const handleSetCNodeDetail = (res) => ({ type: RECEIVE_CNODE_REPLYS, res });
 
 export const handleFetchCNodeDetail = ({ id }) => {
   return async dispatch => {
@@ -80,5 +82,26 @@ export const handleFetchCNodeDetail = ({ id }) => {
     }
     dispatch(handleSetFetch(false));
     dispatch(handleSetCNodeDetail(res));
+  };
+};
+
+export const handleSetV2EXDetail = (data) => ({ type: RECEIVE_V2EX_REPLYS, data });
+
+export const handleSetV2EXisNoMore = (data) => ({ type: RECEIVE_V2EX_ISNOMORE, data });
+
+export const handleFetchV2EXDetail = ({ id, pageIndex }) => {
+  return async dispatch => {
+    dispatch(handleSetFetch(true));
+    dispatch(handleSetV2EXisNoMore(true));
+    let res;
+    try {
+      res = await axios.get(`/v2ex/detail/${id}?pageIndex=${pageIndex}`);
+      res.isNoMoreData = false;
+    } catch (error) {
+      console.error('error', error); // eslint-disable-line
+      res = { message: error.message, data: { isNoMoreData: true } };
+    }
+    dispatch(handleSetFetch(false));
+    dispatch(handleSetV2EXDetail({ res, pageIndex }));
   };
 };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import LazyLoad from 'react-lazy-load';
+import MarkDown from '@/components/MarkDown/MarkDown'; 
 import { handleFetchCNodeDetail } from '@/redux/actions/index';
 import { cnodeMap } from '@/config/nav';
 
@@ -76,10 +77,7 @@ export default class CNodeDetail extends Component {
           <span>来自{cnodeMap[tab]}</span>
         </div>
         <p className={styles['CNodeDetail-replies']}>{replies.length}回复</p>
-        <section
-          className={styles['CNodeDetail-content'], 'markdown-body'}
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+        <MarkDown classnames={ styles['CNodeDetail-content'] } content={content} />
         <ul>{this.renderReplys(replies)}</ul>
       </div>
     );

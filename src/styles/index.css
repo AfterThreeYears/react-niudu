@@ -4,6 +4,13 @@ html, body, :global(#root) {
   overflow-x: hidden;
 }
 
+:global(#root) {
+  width: 10rem;
+  margin: 0 auto;
+  background: #fff;
+  min-height: 100%;
+}
+
 a {
   text-decoration: none;
   color: initial;
@@ -12,6 +19,10 @@ a {
 * {
   box-sizing: border-box;
   font-size: 0.3rem;
+}
+
+ol, ul, li {
+  list-style: none;
 }
 
 :global(.text-ellipsis) {

@@ -5,7 +5,9 @@ import {
   SET_NAV_INFO,
   SET_HEIGHT,
   SET_FETCH,
-  RECEIVE_REPLYS,
+  RECEIVE_CNODE_REPLYS,
+  RECEIVE_V2EX_REPLYS,
+  RECEIVE_V2EX_ISNOMORE,
 } from '../actions';
 
 const posts = (state = {
@@ -73,8 +75,32 @@ const globalInfo = (state = {
 const cnodeDetail = (state = {}, action) => {
   const { res, type } = action;
   switch (type) {
-  case RECEIVE_REPLYS:
+  case RECEIVE_CNODE_REPLYS:
     return res;
+  default:
+    return state;
+  }
+};
+
+const v2exDetail = (state = { res: { isNoMoreData: false }, pageIndex: 1 }, action) => {
+  const { data, type } = action;
+  switch (type) {
+  case RECEIVE_V2EX_REPLYS:
+    return {
+      ...data,
+      res: {
+        ...data.res,
+        replier: [ ...(state.res.replier || []), ...data.res.replier ],
+      },
+    };
+  case RECEIVE_V2EX_ISNOMORE:
+    return {
+      ...state,
+      res: {
+        ...state.res,
+        isNoMoreData: data,
+      },
+    };
   default:
     return state;
   }
@@ -86,6 +112,7 @@ const reducer = combineReducers({
   subTabInfo,
   globalInfo,
   cnodeDetail,
+  v2exDetail,
 });
 
 export default reducer;
