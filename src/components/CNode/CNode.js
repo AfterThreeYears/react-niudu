@@ -3,6 +3,7 @@ import qs from 'qs';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import isUndefined from 'lodash/isUndefined';
 import PropTypes from 'prop-types';
 import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
@@ -37,8 +38,11 @@ export default class CNode extends Component {
     if (isClear) this.reactPullList.handleScrollTo(0);
   }
   componentDidUpdate() {
-    const search = qs.parse(this.props.location.search.substr(1));
-    this.reactPullList.handleScrollTo(search.index);
+    const { index } = qs.parse(this.props.location.search.substr(1));
+    if (isUndefined(index)) return;
+    this.reactPullList.handleScrollTo(index);
+    // 跳转以后需要清除index, 防止下一次还是回到这个位置
+    this.props.history.push('/cnode');
   }
   handleLoaderMore = () => {
     const {

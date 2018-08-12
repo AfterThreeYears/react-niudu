@@ -47,7 +47,7 @@ export default class V2EXDetail extends Component {
         </div>
         <div className={styles['v2exDetail-detail']}>
           <div className={styles['v2exDetail-detail-left']}>
-            <p>{dark} {small}</p>
+            <p className={styles['v2exDetail-info']}>{dark} {small}</p>
             <MarkDown classnames={ styles['v2exDetail-replyContent'] } content={replyContent} />
           </div>
           <div className={styles['v2exDetail-detail-right']}>

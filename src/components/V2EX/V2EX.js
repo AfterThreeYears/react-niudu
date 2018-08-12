@@ -3,6 +3,7 @@ import qs from 'qs';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import isUndefined from 'lodash/isUndefined';
 import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
 import { handleRecoverV2EXDetail } from '@/redux/actions/index';
@@ -28,8 +29,11 @@ export default class V2EX extends Component {
     if (isClear) this.reactPullList.handleScrollTo(0);
   }
   componentDidUpdate() {
-    const search = qs.parse(this.props.location.search.substr(1));
-    this.reactPullList.handleScrollTo(search.index);
+    const { index } = qs.parse(this.props.location.search.substr(1));
+    if (isUndefined(index)) return;
+    this.reactPullList.handleScrollTo(index);
+    // 跳转以后需要清除index, 防止下一次还是回到这个位置
+    this.props.history.push('/v2ex');
   }
   itemRenderer = (index) => {
     const items = this.convertField();
