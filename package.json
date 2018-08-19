@@ -59,7 +59,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "lint": "eslint src/**/*",
-    "lint:fix": "eslint --fix src/**/*"
+    "lint:fix": "eslint --fix src/**/*",
+    "deploy": "sh ./config/deploy.sh"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-rc.1",

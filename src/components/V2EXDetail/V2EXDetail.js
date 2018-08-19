@@ -68,7 +68,6 @@ export default class V2EXDetail extends Component {
     const { v2exDetail, globalInfo } = this.props;
     const { message, res: { replier, isNoMoreData } } = v2exDetail;
     const { isFetching } = globalInfo;
-    if (isFetching) return (<p>加载中...</p>);
     if (message) return (<p>异常: {message}</p>);
     return (
       <ReactPullList
