@@ -10,6 +10,7 @@ import ReactPullList from '@/components/ReactPullList/ReactPullList';
 import { handleRecoverCNodeDetail, fetchPosts } from '@/redux/actions';
 import { dateDiff } from '@/utils/time';
 import { cnodeTag } from '@/utils/tag';
+import { savePositionIndex, clearPositionIndex } from '@/utils/history';
 
 import styles from './CNode.css';
 
@@ -28,6 +29,17 @@ export default class CNode extends Component {
     fetchPosts: () => {},
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
+    // 检查是否需要清空列表
+    this.checkHasClearList(nextProps);
+  }
+  componentDidUpdate() {
+    const { index } = qs.parse(this.props.location.search.substr(1));
+    if (isUndefined(index)) return;
+    this.reactPullList.handleScrollTo(index);
+    // 跳转以后需要清除index, 防止下一次还是回到这个位置
+    clearPositionIndex(this.props);
+  }
+  checkHasClearList(nextProps) {
     const { subTabInfo } = this.props;
     const oldNav = subTabInfo.currentNav;
     const oldTab = subTabInfo.currentTab;
@@ -36,13 +48,6 @@ export default class CNode extends Component {
     // 导航不同或者tab不同都需要去清空列表
     const isClear = oldNav !== currentNav || oldTab !== currentTab;
     if (isClear) this.reactPullList.handleScrollTo(0);
-  }
-  componentDidUpdate() {
-    const { index } = qs.parse(this.props.location.search.substr(1));
-    if (isUndefined(index)) return;
-    this.reactPullList.handleScrollTo(index);
-    // 跳转以后需要清除index, 防止下一次还是回到这个位置
-    this.props.history.push('/cnode');
   }
   handleLoaderMore = () => {
     const {
@@ -62,7 +67,7 @@ export default class CNode extends Component {
   handleJump = (id) => {
     const index = this.reactPullList.reactList.getVisibleRange()[0];
     this.props.handleRecoverCNodeDetail();
-    this.props.history.push(`/cnode?index=${index}`);
+    savePositionIndex(this.props, index);
     this.props.history.push(`/cnode/detail/${id}`);
   }
   itemRenderer = (index, key) => {

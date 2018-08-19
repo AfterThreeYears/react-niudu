@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
 import withRef from '@/components/Hoc/withRef';
@@ -24,15 +25,16 @@ export default class SubSideBar extends Component {
   };
   constructor(props) {
     super(props);
+    const { tabIndex } = qs.parse(this.props.location.search.substr(1));
     this.state = {
-      selectedIndex: 0,
+      selectedIndex: Number(tabIndex) || 0,
       swiperViewWidth: 0,
     };
   }
   componentDidMount() {
     this.setState({
       swiperViewWidth: getPropNumeric(this.swiperWrap, 'width'),
-    });
+    }, this.handleInitSwipe);
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     const oldNav = this.props.currentNav;
@@ -43,11 +45,13 @@ export default class SubSideBar extends Component {
     // 导航不同或者tab不同都需要去清空列表
     const isClear = isChangedNav || oldTab !== currentTab;
     this.props.fetchPosts({ currentNav, currentTab, isClear });
+    const { tabIndex } = qs.parse(this.props.location.search.substr(1));
     if (isChangedNav) {
-      this.setState({ selectedIndex: 0 }, () => {
-        this.SwipeWrapper && this.SwipeWrapper.init();
-      });
+      this.setState({ selectedIndex: isChangedNav ? 0 : Number(tabIndex) || 0 }, this.handleInitSwipe);
     }
+  }
+  handleInitSwipe() {
+    this.SwipeWrapper && this.SwipeWrapper.init();
   }
   handleClick(e, item, index) {
     const {
@@ -61,6 +65,9 @@ export default class SubSideBar extends Component {
     });
     this.setState({
       selectedIndex: index,
+    }, () => {
+      const search = qs.stringify({ tabIndex: index });
+      this.props.history.push(`${this.props.location.pathname}?${search}`);
     });
   }
   render() {

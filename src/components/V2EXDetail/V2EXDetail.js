@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
 import LazyLoad from 'react-lazy-load';
 import { handleFetchV2EXDetail } from '@/redux/actions/index';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
@@ -18,9 +17,10 @@ export default class V2EXDetail extends Component {
   }
 
   itemRenderer = (index, key) => {
-    const { replier, content } = this.props.v2exDetail.res;
-    const { title, lastReply, markdown } = content;
+    const { replier } = this.props.v2exDetail.res;
+    const reply = replier[index];
     if (index === 0) {
+      const { title, lastReply, markdown } = reply;
       return (<section key={key}>
         <h2 className={styles['v2exDetail-title']}>{title}</h2>
         <hr />
@@ -29,7 +29,6 @@ export default class V2EXDetail extends Component {
         <hr />
       </section>);
     } 
-    const reply = replier[index - 1];
     const { avatar, dark, small, replyContent } = reply;
     return (
       <div
@@ -69,7 +68,7 @@ export default class V2EXDetail extends Component {
     const { v2exDetail, globalInfo } = this.props;
     const { message, res: { replier, isNoMoreData } } = v2exDetail;
     const { isFetching } = globalInfo;
-    if (isEmpty(replier)) return (<p>加载中...</p>);
+    if (isFetching) return (<p>加载中...</p>);
     if (message) return (<p>异常: {message}</p>);
     return (
       <ReactPullList

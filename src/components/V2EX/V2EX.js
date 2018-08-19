@@ -7,6 +7,7 @@ import isUndefined from 'lodash/isUndefined';
 import LazyLoad from 'react-lazy-load';
 import ReactPullList from '@/components/ReactPullList/ReactPullList';
 import { handleRecoverV2EXDetail } from '@/redux/actions/index';
+import { savePositionIndex, clearPositionIndex } from '@/utils/history';
 
 import styles from './V2EX.css';
 
@@ -19,6 +20,17 @@ export default class V2EX extends Component {
     posts: {},
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
+    // 检查是否需要清空列表
+    this.checkHasClearList(nextProps);
+  }
+  componentDidUpdate() {
+    const { index } = qs.parse(this.props.location.search.substr(1));
+    if (isUndefined(index)) return;
+    this.reactPullList.handleScrollTo(index);
+    // 跳转以后需要清除index, 防止下一次还是回到这个位置
+    clearPositionIndex(this.props);
+  }
+  checkHasClearList(nextProps) {
     const { subTabInfo } = this.props;
     const oldNav = subTabInfo.currentNav;
     const oldTab = subTabInfo.currentTab;
@@ -27,13 +39,6 @@ export default class V2EX extends Component {
     // 导航不同或者tab不同都需要去清空列表
     const isClear = oldNav !== currentNav || oldTab !== currentTab;
     if (isClear) this.reactPullList.handleScrollTo(0);
-  }
-  componentDidUpdate() {
-    const { index } = qs.parse(this.props.location.search.substr(1));
-    if (isUndefined(index)) return;
-    this.reactPullList.handleScrollTo(index);
-    // 跳转以后需要清除index, 防止下一次还是回到这个位置
-    this.props.history.push('/v2ex');
   }
   itemRenderer = (index) => {
     const items = this.convertField();
@@ -76,7 +81,7 @@ export default class V2EX extends Component {
   handleJump = (id) => {
     this.props.handleRecoverV2EXDetail();
     const index = this.reactPullList.reactList.getVisibleRange()[0];
-    this.props.history.push(`/v2ex?index=${index}`);
+    savePositionIndex(this.props, index);
     this.props.history.push(`/v2ex/detail/${id}`);
   }
   render() {

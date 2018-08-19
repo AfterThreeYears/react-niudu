@@ -61,7 +61,7 @@ export default class CNodeDetail extends Component {
       replies,
       content,
     } = cnodeDetail;
-    if (isEmpty(cnodeDetail)) return (<p>加载中...</p>);
+    if (isEmpty(author)) return (<p>加载中...</p>);
     if (message) return (<p>异常: {message}</p>);
     const { loginname } = author;
     return (

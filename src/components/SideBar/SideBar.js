@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import classnames from 'classnames';
+import qs from 'qs';
 import SwipeWrapper from '@/components/Swiper/SwipeWrapper';
 import SwipeItem from '@/components/Swiper/SwipeItem';
 import withRef from '@/components/Hoc/withRef';
@@ -26,9 +27,11 @@ export default  class SideBar extends Component {
   
   componentDidMount() {
     const { tabs, url } = navs[this.state.selectedIndex];
+    const { tabIndex } = qs.parse(this.props.location.search.substr(1));
+
     this.props.handleSetNavInfo({
       currentNav: url,
-      currentTab: tabs[0].tab,
+      currentTab: tabs[tabIndex || 0].tab,
       tabs: tabs,
     });
   }

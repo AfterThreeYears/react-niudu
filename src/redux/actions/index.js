@@ -106,6 +106,7 @@ export const handleFetchV2EXDetail = ({ id, pageIndex }) => {
       console.error('error', error); // eslint-disable-line
       res = { message: error.message, data: { isNoMoreData: true } };
     }
+    res.replier.unshift(res.content);
     dispatch(handleSetFetch(false));
     dispatch(handleSetV2EXDetail({ res, pageIndex }));
   };
